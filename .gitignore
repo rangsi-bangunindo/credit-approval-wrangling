@@ -1,0 +1,24 @@
+# Ignore all raw data
+data/
+*.csv
+
+# Jupyter notebook metadata
+.ipynb_checkpoints/
+
+# Python bytecode
+__pycache__/
+
+# Virtual environments
+.venv/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# SQL editor backups or temp files
+*.bak
+*.swp
+*~
+
+# VSCode settings (if used)
+.vscode/
