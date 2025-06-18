@@ -1,1 +1,0 @@
-TRUNCATE TABLE credit_record, application_record CASCADE;
