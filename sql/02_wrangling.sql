@@ -57,3 +57,8 @@ SELECT
     c.flag_overdue_30d   -- Overdue flag
 FROM application_record a
 JOIN credit_summary c ON a.id = c.id;
+
+-- Clean up: Drop staging tables now that all data has been inserted and merged
+-- Drop raw application and credit records table
+DROP TABLE IF EXISTS application_record_staging;
+DROP TABLE IF EXISTS credit_record_staging;
