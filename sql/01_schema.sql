@@ -1,4 +1,3 @@
--- 01_schema.sql
 -- Purpose: Define the database schema for credit card approval data,
 -- including main tables and their corresponding staging tables for raw CSV ingestion
 

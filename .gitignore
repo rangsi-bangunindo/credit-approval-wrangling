@@ -20,5 +20,5 @@ Thumbs.db
 *.swp
 *~
 
-# VSCode settings (if used)
+# VSCode settings
 .vscode/

@@ -1,8 +1,8 @@
-# 💳 Credit Card Approval (SQL Wrangling Project)
+# Credit Card Approval (SQL Wrangling Project)
 
 This project processes and prepares credit card approval data using PostgreSQL. It follows a staging-based ETL approach to load raw CSVs, clean and transform the data, and output structured datasets. The SQL logic is supported by pandas-based exploratory wrangling in a Jupyter notebook.
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 credit-card-approval/
@@ -25,7 +25,7 @@ credit-card-approval/
 └── README.md                    # Project documentation
 ```
 
-## 📥 Dataset
+## Dataset
 
 This project uses the publicly available Credit Card Approval dataset from Kaggle.
 
@@ -41,7 +41,7 @@ credit-card-approval/
     └── credit_record.csv
 ```
 
-## 🚀 SQL Setup Instructions
+## SQL Setup Instructions
 
 ### 1. Create the PostgreSQL Database
 
@@ -87,7 +87,7 @@ This script will:
 - Clean and deduplicate the staging data
 - Insert structured records into `application_record` and `credit_record` tables
 
-## 📦 Python Environment (Optional)
+## Python Environment (Optional)
 
 To run the Jupyter notebook or replicate pandas-based wrangling locally:
 
@@ -110,7 +110,7 @@ This installs:
 - `matplotlib`, `seaborn` for visualization
 - (Optional) `notebook` or `jupyterlab` if running `.ipynb` locally
 
-## 👤 Author
+## Author
 
 Developed by Rangsi Kayana.  
 This project demonstrates structured data wrangling using both SQL and pandas, following best practices in data preparation.

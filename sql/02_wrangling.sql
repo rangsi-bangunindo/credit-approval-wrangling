@@ -1,4 +1,3 @@
--- 02_wrangling.sql
 -- Purpose: Clean, transform the data, and output structured datasets,
 -- following best practices in data preparation
 
@@ -34,8 +33,16 @@ SELECT s.id, s.months_balance, s.status
 FROM credit_record_staging s
 JOIN application_record a ON s.id = a.id;
 
--- Create a base table based on credit record summary
-CREATE TABLE credit_data_prepared AS
+-- Clean up: Drop staging tables now that all data has been inserted into real tables
+-- Drop raw application and credit records table
+DROP TABLE IF EXISTS application_record_staging;
+DROP TABLE IF EXISTS credit_record_staging;
+
+-- Drop the view if it already exists
+DROP VIEW IF EXISTS credit_data_v0;
+
+-- Create a view that merges application_record and summarized credit_record
+CREATE VIEW credit_data_v0 AS
 -- Create a credit record summary per customer ID from inserted data
 -- Equivalent to: 
 --   cred_prep['FLAG_OVERDUE_30D'] = cred_prep['STATUS'].isin(['1','2','3','4','5']).astype(int)
@@ -58,7 +65,46 @@ SELECT
 FROM application_record a
 JOIN credit_summary c ON a.id = c.id;
 
--- Clean up: Drop staging tables now that all data has been inserted and merged
--- Drop raw application and credit records table
-DROP TABLE IF EXISTS application_record_staging;
-DROP TABLE IF EXISTS credit_record_staging;
+-- Drop the view if it already exists
+DROP VIEW IF EXISTS credit_data_v1;
+
+-- Create a view for current cleaned/transformed state
+CREATE VIEW credit_data_v1 AS
+SELECT
+    id,
+    ABS(days_birth) AS days_birth,  -- convert to positive values (age in days)
+    CASE 
+        WHEN days_employed = 365243 THEN 0   -- Replace 365243 (unemployed placeholder) with 0,
+        ELSE ABS(days_employed)              -- otherwise use positive value
+    END AS days_employed,
+    CASE 
+        WHEN code_gender = 'F' THEN 0
+        WHEN code_gender = 'M' THEN 1
+        ELSE NULL
+    END AS flag_gender,
+    CASE 
+        WHEN flag_own_car = 'Y' THEN 1
+        WHEN flag_own_car = 'N' THEN 0
+        ELSE NULL
+    END AS flag_car,
+    CASE 
+        WHEN flag_own_realty = 'Y' THEN 1
+        WHEN flag_own_realty = 'N' THEN 0
+        ELSE NULL
+    END AS flag_realty,
+    -- Drop these columns by excluding them from SELECT:
+	-- FLAG_MOBIL, CODE_GENDER, FLAG_OWN_CAR, FLAG_OWN_REALTY, OCCUPATION_TYPE
+    -- Retain remaining columns
+    cnt_children,
+    amt_income_total,
+    name_income_type,
+    name_education_type,
+    name_family_status,
+    name_housing_type,
+    flag_work_phone,
+    flag_phone,
+    flag_email,
+    cnt_fam_members,
+    months_record,
+    flag_overdue_30d
+FROM credit_data_v0;
