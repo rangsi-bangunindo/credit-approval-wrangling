@@ -6,16 +6,42 @@ TRUNCATE TABLE application_record, credit_record;
 -- Insert only unique (non-duplicate) application records from the staging table
 -- (IDs that appear exactly once in the staging table)
 INSERT INTO application_record (
-    id, code_gender, flag_own_car, flag_own_realty, cnt_children, amt_income_total,
-    name_income_type, name_education_type, name_family_status, name_housing_type,
-    days_birth, days_employed, flag_mobil, flag_work_phone, flag_phone, flag_email,
-    occupation_type, cnt_fam_members
+    id, code_gender,
+    flag_own_car,
+    flag_own_realty,
+    cnt_children, amt_income_total,
+    name_income_type,
+    name_education_type,
+    name_family_status,
+    name_housing_type,
+    days_birth,
+    days_employed,
+    flag_mobil,
+    flag_work_phone,
+    flag_phone,
+    flag_email,
+    occupation_type,
+    cnt_fam_members
 )
 SELECT
-    s.id, s.code_gender, s.flag_own_car, s.flag_own_realty, s.cnt_children, s.amt_income_total,
-    s.name_income_type, s.name_education_type, s.name_family_status, s.name_housing_type,
-    s.days_birth, s.days_employed, s.flag_mobil, s.flag_work_phone, s.flag_phone, s.flag_email,
-    s.occupation_type, s.cnt_fam_members
+    s.id,
+    s.code_gender,
+    s.flag_own_car,
+    s.flag_own_realty,
+    s.cnt_children,
+    s.amt_income_total,
+    s.name_income_type,
+    s.name_education_type,
+    s.name_family_status,
+    s.name_housing_type,
+    s.days_birth,
+    s.days_employed,
+    s.flag_mobil,
+    s.flag_work_phone,
+    s.flag_phone,
+    s.flag_email,
+    s.occupation_type,
+    s.cnt_fam_members
 FROM application_record_staging s
 
 -- Only keep rows where the ID appears exactly once in the staging table
@@ -93,7 +119,7 @@ SELECT
         ELSE NULL
     END AS flag_realty,
     -- Drop these columns by excluding them from SELECT:
-	-- FLAG_MOBIL, CODE_GENDER, FLAG_OWN_CAR, FLAG_OWN_REALTY, OCCUPATION_TYPE
+    -- FLAG_MOBIL, CODE_GENDER, FLAG_OWN_CAR, FLAG_OWN_REALTY, OCCUPATION_TYPE
     -- Retain remaining columns
     cnt_children,
     amt_income_total,
@@ -108,3 +134,60 @@ SELECT
     months_record,
     flag_overdue_30d
 FROM credit_data_v0;
+
+-- Drop the view if it already exists
+DROP VIEW IF EXISTS credit_data_v2;
+
+-- Create a view with outlier handling applied to key columns
+CREATE VIEW credit_data_v2 AS
+SELECT
+    id,
+    days_birth,
+    days_employed,
+    flag_gender,
+    flag_car,
+    flag_realty,
+    -- Cap number of children at 5 to reduce skew
+    LEAST(cnt_children, 5) AS cnt_children,
+    -- Cap income at 1,000,000 to avoid extreme outliers
+    LEAST(amt_income_total, 1000000) AS amt_income_total,
+    name_income_type,
+    name_education_type,
+    name_family_status,
+    name_housing_type,
+    flag_work_phone,
+    flag_phone,
+    flag_email,
+    -- Cap family size at 7 (values above are rare and likely anomalies)
+    LEAST(cnt_fam_members, 7) AS cnt_fam_members,
+    months_record,
+    flag_overdue_30d
+FROM credit_data_v1;
+
+-- Drop the final table if it already exists
+DROP TABLE IF EXISTS credit_data_prepared;
+
+-- Create the real table from credit_data_v2
+-- Columns reordered to match final structure requirement
+CREATE TABLE credit_data_prepared AS
+SELECT
+    id,
+    cnt_children,
+    amt_income_total,
+    name_income_type,
+    name_education_type,
+    name_family_status,
+    name_housing_type,
+    days_birth,
+    days_employed,
+    flag_work_phone,
+    flag_phone,
+    flag_email,
+    cnt_fam_members,
+    months_record,
+    flag_overdue_30d,
+    flag_gender,
+    flag_car,
+    flag_realty
+FROM credit_data_v2  -- Source view that contains all transformation logic
+ORDER BY id;         -- Sort rows by ID for consistent output

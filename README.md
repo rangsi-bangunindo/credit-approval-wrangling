@@ -6,12 +6,13 @@ This project processes and prepares credit card approval data using PostgreSQL. 
 
 ```
 credit-card-approval/
-├── data/                         # Contains raw CSV files (excluded from Git)
+├── data/                        # Contains raw CSV files (excluded from Git)
 │   ├── application_record.csv
 │   └── credit_record.csv
 │
-├── output/
-│   └── credit_data_prepared.csv # Cleaned data output from SQL or pandas
+├── output/                      # Cleaned data output from SQL and pandas
+│   ├── credit_data_prepared_sql.csv
+│   └── credit_data_prepared_pandas.csv
 │
 ├── notebooks/
 │   └── credit_card_approval_wrangling.ipynb
@@ -86,6 +87,18 @@ This script will:
 
 - Clean and deduplicate the staging data
 - Insert structured records into `application_record` and `credit_record` tables
+- Perform feature engineering and transformations
+- Output a final prepared dataset to `credit_data_prepared` table
+
+### 5. Export Final Dataset to CSV
+
+From the `psql` prompt:
+
+```sql
+\copy credit_data_prepared TO 'output/credit_data_prepared_sql.csv' WITH (FORMAT csv, HEADER true)
+```
+
+This will export the cleaned and transformed dataset into the `output/` directory.
 
 ## Python Environment (Optional)
 

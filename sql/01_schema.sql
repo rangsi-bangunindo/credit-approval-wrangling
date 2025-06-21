@@ -14,7 +14,7 @@ CREATE TABLE application_record (
     flag_own_car         CHAR(1) NOT NULL,             -- Owns a car: 'Y' or 'N'
     flag_own_realty      CHAR(1) NOT NULL,             -- Owns property: 'Y' or 'N'
     cnt_children         INTEGER NOT NULL,             -- Number of children
-    amt_income_total     NUMERIC(12,2) NOT NULL,       -- Annual income
+    amt_income_total     NUMERIC(12,1) NOT NULL,       -- Annual income
     name_income_type     VARCHAR(50) NOT NULL,         -- Income category
     name_education_type  VARCHAR(50) NOT NULL,         -- Education level
     name_family_status   VARCHAR(50) NOT NULL,         -- Marital status
@@ -38,7 +38,7 @@ CREATE TABLE application_record_staging (
     flag_own_car         CHAR(1),
     flag_own_realty      CHAR(1),
     cnt_children         INTEGER,
-    amt_income_total     NUMERIC(12,2),
+    amt_income_total     NUMERIC(12,1),
     name_income_type     VARCHAR(50),
     name_education_type  VARCHAR(50),
     name_family_status   VARCHAR(50),
