@@ -5,7 +5,7 @@ This project processes and prepares credit card approval data using PostgreSQL. 
 ## Project Structure
 
 ```
-credit-card-approval/
+credit-approval-wrangling/
 ├── data/                        # Contains raw CSV files (excluded from Git)
 │   ├── application_record.csv
 │   └── credit_record.csv
@@ -15,7 +15,7 @@ credit-card-approval/
 │   └── credit_data_prepared_pandas.csv
 │
 ├── notebooks/
-│   └── credit_card_approval_wrangling.ipynb
+│   └── credit_approval_wrangling.ipynb
 │
 ├── sql/
 │   ├── 01_schema.sql            # Creates real + staging tables
@@ -36,7 +36,7 @@ https://www.kaggle.com/datasets/rikdifos/credit-card-approval-prediction
 After downloading, place the following files inside the `data/` folder:
 
 ```
-credit-card-approval/
+credit-approval-wrangling/
 └── data/
     ├── application_record.csv
     └── credit_record.csv

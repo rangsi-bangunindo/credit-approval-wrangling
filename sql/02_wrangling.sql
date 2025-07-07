@@ -43,7 +43,6 @@ SELECT
     s.occupation_type,
     s.cnt_fam_members
 FROM application_record_staging s
-
 -- Only keep rows where the ID appears exactly once in the staging table
 JOIN (
     SELECT id
