@@ -1,6 +1,8 @@
-# Credit Card Approval (SQL Wrangling Project)
+# Credit Card Approval: Data Wrangling with SQL and Pandas
 
 This project processes and prepares credit card approval data using PostgreSQL. It follows a staging-based ETL approach to load raw CSVs, clean and transform the data, and output structured datasets. The SQL logic is supported by pandas-based exploratory wrangling in a Jupyter notebook.
+
+---
 
 ## Project Structure
 
@@ -26,6 +28,8 @@ credit-approval-wrangling/
 └── README.md                    # Project documentation
 ```
 
+---
+
 ## Dataset
 
 This project uses the publicly available Credit Card Approval dataset from Kaggle.
@@ -41,6 +45,8 @@ credit-approval-wrangling/
     ├── application_record.csv
     └── credit_record.csv
 ```
+
+---
 
 ## SQL Setup Instructions
 
@@ -58,11 +64,15 @@ Or from the terminal:
 createdb -U postgres credit_card_approval
 ```
 
+---
+
 ### 2. Create Schema and Tables (Real + Staging)
 
 ```bash
 psql -U postgres -d credit_card_approval -f sql/01_schema.sql
 ```
+
+---
 
 ### 3. Load Raw CSVs into Staging Tables
 
@@ -77,6 +87,8 @@ Inside the `psql` prompt:
 \copy credit_record_staging FROM 'data/credit_record.csv' WITH (FORMAT csv, HEADER true);
 ```
 
+---
+
 ### 4. Run Wrangling Script
 
 ```bash
@@ -90,6 +102,8 @@ This script will:
 - Perform feature engineering and transformations
 - Output a final prepared dataset to `credit_data_prepared` table
 
+---
+
 ### 5. Export Final Dataset to CSV
 
 From the `psql` prompt:
@@ -99,6 +113,8 @@ From the `psql` prompt:
 ```
 
 This will export the cleaned and transformed dataset into the `output/` directory.
+
+---
 
 ## Python Environment (Optional)
 
@@ -111,6 +127,8 @@ python -m venv .venv
 .venv\Scripts\activate
 ```
 
+---
+
 ### 2. Install Requirements
 
 ```bash
@@ -122,8 +140,3 @@ This installs:
 - `pandas`, `numpy` for wrangling
 - `matplotlib`, `seaborn` for visualization
 - (Optional) `notebook` or `jupyterlab` if running `.ipynb` locally
-
-## Author
-
-Developed by Rangsi Kayana.  
-This project demonstrates structured data wrangling using both SQL and pandas, following best practices in data preparation.
